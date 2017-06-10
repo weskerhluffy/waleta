@@ -15,6 +15,8 @@ BEGIN
   DECLARE v_name_len int DEFAULT 0;
   DECLARE cur_split_len int DEFAULT 0;
   DECLARE cur_split varchar(50);
+  DECLARE result_str_pre text;
+  DECLARE result_str text;
   DECLARE sc_cursor CURSOR FOR
     SELECT s.id, s.name from sometbl s;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_finished = 1;  
@@ -32,6 +34,8 @@ BEGIN
     set previous_pos = 0;
     set current_pos = 0;
     set v_name_len=length(v_name);
+    
+    set result_str_pre = concat(v_id);
     repeat
       set current_pos = locate('|',v_name,current_pos+1);
       if(current_pos = 0) then
@@ -42,7 +46,8 @@ BEGIN
         set cur_split_len=current_pos-previous_pos-1;
       end if;
       set cur_split=substring(v_name,previous_pos+1,cur_split_len);
-      select cur_split;
+      set result_str = concat(result_str_pre,', ',cur_split);
+      select result_str;
       set previous_pos=current_pos;
     until finished_cur_split
     end repeat;
