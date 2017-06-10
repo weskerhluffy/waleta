@@ -4,7 +4,7 @@
 drop procedure if exists split_column;
 DELIMITER //
 CREATE PROCEDURE split_column 
-(IN con CHAR(20))
+(IN delimiter CHAR(20))
 BEGIN
   DECLARE v_finished INTEGER DEFAULT 0;
   DECLARE v_id int DEFAULT 0;
@@ -37,7 +37,7 @@ BEGIN
     
     set result_str_pre = concat(v_id);
     repeat
-      set current_pos = locate('|',v_name,current_pos+1);
+      set current_pos = locate(delimiter,v_name,current_pos+1);
       if(current_pos = 0) then
         set finished_cur_split = 1;
         set current_pos=v_name_len;
