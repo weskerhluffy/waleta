@@ -58,4 +58,4 @@ BEGIN
 END //
 DELIMITER ;
 
-call split_column ("oi");
+call split_column ('|');
