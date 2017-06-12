@@ -5,14 +5,17 @@ import static java.util.Arrays.asList;
 public class ComplementaryPairs {
 
 	public int[] twoSum(int[] nums, int target) {
-		HashMap<Integer, Set<Integer>> positions_by_value = new HashMap<>();
-		Integer nums_len = nums.length;
-		List<List<Integer>> complementaryPairs = new ArrayList<>();
-		Set<Integer> positions = null;
 		int firstComplementaryPair[] = new int[2];
 		Integer firstComplementaryPairIdx = 0;
+		Integer leftIdx = 0;
+		Integer rightIdx = 0;
+		List<List<Integer>> complementaryPairs = new ArrayList<>();
+		int nums_sorted[] = nums.clone();
+		HashMap<Integer, Set<Integer>> positions_by_value = new HashMap<>();
+		Set<Integer> positions = null;
+		Arrays.sort(nums_sorted);
 
-		for (Integer i = 0; i < nums_len; i++) {
+		for (Integer i = 0; i < nums.length; i++) {
 			Integer num_cur = nums[i];
 			if ((positions = (Set<Integer>) positions_by_value.get(num_cur)) != null) {
 				positions.add(i);
@@ -20,55 +23,32 @@ public class ComplementaryPairs {
 				positions_by_value
 						.put(num_cur, new HashSet<Integer>(asList(i)));
 			}
-
 		}
 
-		for (Integer num_cur : positions_by_value.keySet()) {
-			Integer complement = target - num_cur;
-			Integer firstNum;
-			Integer secondNum;
-			if (complement < num_cur) {
-				firstNum = complement;
-				secondNum = num_cur;
+		rightIdx = nums.length - 1;
+
+		while (rightIdx > leftIdx) {
+			Integer leftNum = nums_sorted[leftIdx];
+			Integer rightNum = nums_sorted[rightIdx];
+			System.out.println("me lleva la mierda " + leftNum + " + "
+					+ rightNum + " = " + (leftNum + rightNum));
+
+			if (leftNum + rightNum > target) {
+				rightIdx--;
 			} else {
-				firstNum = num_cur;
-				secondNum = complement;
-			}
-			if ((positions = (Set<Integer>) positions_by_value.get(complement)) != null) {
-
-				Set<Integer> positions_num_cur = positions_by_value
-						.get(num_cur);
-
-				for (Integer position_complement : positions) {
-					for (Integer position_num_cur : positions_num_cur) {
-						if (position_complement != position_num_cur) {
-							if (position_complement < position_num_cur) {
-								firstNum = position_complement;
-								secondNum = position_num_cur;
-							} else {
-								firstNum = position_num_cur;
-								secondNum = position_complement;
-							}
-							complementaryPairs.add(new ArrayList<>(asList(
-									firstNum, secondNum)));
-						}
-					}
+				if (leftNum + rightNum < target) {
+					leftIdx++;
+				} else {
+					Integer firstNum = 0;
+					Integer secondNum = 0;
+					firstNum = (Integer) positions_by_value.get(leftNum)
+							.toArray()[0];
+					secondNum = (Integer) positions_by_value.get(rightNum)
+							.toArray()[positions_by_value.get(rightNum)
+							.toArray().length - 1];
+					complementaryPairs.add(asList(firstNum, secondNum));
+					leftIdx++;
 				}
-
-				/*
-				 * Integer ocurrences_complement = positions.size(); Integer
-				 * ocurrences_num_cur = positions_by_value.get(num_cur) .size();
-				 * 
-				 * 
-				 * 
-				 * for (int i = 0; i < ocurrences_complement; i++) { for (int j
-				 * = 0; j < ocurrences_num_cur - 1; j++) {
-				 * complementaryPairs.add(new ArrayList<>(asList(firstNum,
-				 * secondNum))); } } if (num_cur != complement) { for (int j =
-				 * 0; j < ocurrences_complement; j++) {
-				 * complementaryPairs.add(new ArrayList<>(asList(num_cur,
-				 * complement))); } }
-				 */
 			}
 		}
 
@@ -76,6 +56,7 @@ public class ComplementaryPairs {
 			firstComplementaryPair[firstComplementaryPairIdx] = num_cur;
 			firstComplementaryPairIdx++;
 		}
+
 		return firstComplementaryPair;
 	}
 }
