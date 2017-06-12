@@ -35,22 +35,40 @@ public class ComplementaryPairs {
 				secondNum = complement;
 			}
 			if ((positions = (Set<Integer>) positions_by_value.get(complement)) != null) {
-				Integer ocurrences_complement = positions.size();
-				Integer ocurrences_num_cur = positions_by_value.get(num_cur)
-						.size();
 
-				for (int i = 0; i < ocurrences_complement; i++) {
-					for (int j = 0; j < ocurrences_num_cur - 1; j++) {
-						complementaryPairs.add(new ArrayList<>(asList(firstNum,
-								secondNum)));
+				Set<Integer> positions_num_cur = positions_by_value
+						.get(num_cur);
+
+				for (Integer position_complement : positions) {
+					for (Integer position_num_cur : positions_num_cur) {
+						if (position_complement != position_num_cur) {
+							if (position_complement < position_num_cur) {
+								firstNum = position_complement;
+								secondNum = position_num_cur;
+							} else {
+								firstNum = position_num_cur;
+								secondNum = position_complement;
+							}
+							complementaryPairs.add(new ArrayList<>(asList(
+									firstNum, secondNum)));
+						}
 					}
 				}
-				if (num_cur != complement) {
-					for (int j = 0; j < ocurrences_complement; j++) {
-						complementaryPairs.add(new ArrayList<>(asList(num_cur,
-								complement)));
-					}
-				}
+
+				/*
+				 * Integer ocurrences_complement = positions.size(); Integer
+				 * ocurrences_num_cur = positions_by_value.get(num_cur) .size();
+				 * 
+				 * 
+				 * 
+				 * for (int i = 0; i < ocurrences_complement; i++) { for (int j
+				 * = 0; j < ocurrences_num_cur - 1; j++) {
+				 * complementaryPairs.add(new ArrayList<>(asList(firstNum,
+				 * secondNum))); } } if (num_cur != complement) { for (int j =
+				 * 0; j < ocurrences_complement; j++) {
+				 * complementaryPairs.add(new ArrayList<>(asList(num_cur,
+				 * complement))); } }
+				 */
 			}
 		}
 
