@@ -31,7 +31,7 @@ BEGIN
   );
  
   OPEN sc_cursor;
- 
+
   get_column: LOOP
  
     FETCH sc_cursor INTO v_id, v_name;
