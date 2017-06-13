@@ -1,5 +1,5 @@
--- CREATE TABLE sometbl ( ID INT, NAME VARCHAR(50) );
-INSERT INTO sometbl VALUES (1, 'Smith'), (2, 'Julio|Jones|Falcons'), (3, 'White|Snow'), (4, 'Paint|It|Red'), (5, 'Green|Lantern'), (6, 'Brown|bag');
+DROP TABLE IF EXISTS `sometbl`;
+CREATE TABLE sometbl ( ID INT, NAME VARCHAR(50) );INSERT INTO sometbl VALUES (1, 'Smith'), (2, 'Julio|Jones|Falcons'), (3, 'White|Snow'), (4, 'Paint|It|Red'), (5, 'Green|Lantern'), (6, 'Brown|bag');
 INSERT INTO sometbl VALUES (7,'|');
 INSERT INTO sometbl VALUES (8,'one^two|three^four|five|six^seven');
 INSERT INTO sometbl VALUES (9,'aaa|bbb||ccc');
@@ -25,6 +25,11 @@ BEGIN
   DECLARE sc_cursor CURSOR FOR
     SELECT s.id, s.name from sometbl s;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_finished = 1;  
+  create temporary table result_strs
+  (
+    result_str text
+  );
+ 
   OPEN sc_cursor;
  
   get_column: LOOP
@@ -52,7 +57,8 @@ BEGIN
       end if;
       set cur_split=substring(v_name,previous_pos+1,cur_split_len);
       set result_str = concat(result_str_pre,', ',cur_split);
-      select result_str;
+--      select result_str;
+      insert into result_strs values(result_str);
       set previous_pos=current_pos;
     until finished_cur_split
     end repeat;
@@ -60,6 +66,8 @@ BEGIN
   END LOOP get_column;
  
   CLOSE sc_cursor;
+
+  select * from result_strs;
 END //
 DELIMITER ;
 
