@@ -1,4 +1,4 @@
-package com.task
+package task
 
 import spock.lang.Specification
 import java.sql.*;

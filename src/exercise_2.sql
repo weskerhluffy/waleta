@@ -37,11 +37,3 @@ begin
 end;
 $$
 delimiter ;
-
-select initcap('earthfeef') = 'Earthfeef';
-select initcap('earth feef') = 'Earth Feef';
-select initcap('&arth feef ') = '&arth Feef';
-select initcap(' r$"%$·&arth     feef ') = 'R$"%$·&arth     Feef';
-select initcap(' $"%$·&arth     feef ') = '$"%$·&arth     Feef';
-select initcap(' $"%$  ·&arth     feef ') = '$"%$  ·&arth     Feef';
-select strcmp(initcap(' $"%$  ·&arth     feef '), '$"%$  ·&Arth     Feef')==0;
