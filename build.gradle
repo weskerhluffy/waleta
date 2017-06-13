@@ -1,9 +1,7 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
+	repositories { mavenCentral() }
 }
- 
+
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'application'
@@ -11,53 +9,47 @@ apply plugin: 'application'
 //mainClassName = 'hello.HelloWorld'
 //mainClassName = 'hello.AssShit'
 mainClassName = 'hello.Mierda'
- 
+
 jar {
-    baseName = 'your-project-name'
-    version =  '0.1.0'
+	baseName = 'your-project-name'
+	version =  '0.1.0'
 }
- 
-repositories {
-    // Spock releases are available from Maven Central
-    mavenCentral()
-}
- 
+
+repositories { // Spock releases are available from Maven Central
+	mavenCentral() }
+
 // Set Java version here, else default will be used:
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
- 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 dependencies {
-compile group: 'org.codehaus.groovy', name: 'groovy-sql', version: '2.5.0-alpha-1'
+	compile group: 'org.codehaus.groovy', name: 'groovy-sql', version: '2.5.0-alpha-1'
 
-compile 'org.codehaus.groovy:groovy:2.3.7'
-    compile "joda-time:joda-time:2.2"
-        testCompile "junit:junit:4.12"
-    // Spock Framework basic dependencies:
-    testCompile "org.codehaus.groovy:groovy-all:2.4.1"
-    // The version have to be compatible with Groovy:
-    testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
- 
-    // Optional dependencies Spock
-    // To use Hamcrest matchers:
-    testCompile "org.hamcrest:hamcrest-core:1.3"
- 
-    // To mock classes:
-    testRuntime "cglib:cglib-nodep:3.1"
-    // Use with cglib to mock classes without default constructor:
-    testRuntime "org.objenesis:objenesis:2.1"
-            runtime "mysql:mysql-connector-java:5.1.37"
+	compile 'org.codehaus.groovy:groovy:2.3.7'
+	compile "joda-time:joda-time:2.2"
+	testCompile "junit:junit:4.12"
+	// Spock Framework basic dependencies:
+	testCompile "org.codehaus.groovy:groovy-all:2.4.1"
+	// The version have to be compatible with Groovy:
+	testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+
+	// Optional dependencies Spock
+	// To use Hamcrest matchers:
+	testCompile "org.hamcrest:hamcrest-core:1.3"
+
+	// To mock classes:
+	testRuntime "cglib:cglib-nodep:3.1"
+	// Use with cglib to mock classes without default constructor:
+	testRuntime "org.objenesis:objenesis:2.1"
+	runtime "mysql:mysql-connector-java:5.1.37"
 
 }
- 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
-}
+
+task wrapper(type: Wrapper) { gradleVersion = '2.14' }
 task hello {
-    doLast {
-        println 'Hello world!'
-    }
+	doLast { println 'Hello world!' }
 }
 task( hellow, dependsOn: jar, type: JavaExec ) {
-    main = 'hello.HelloWorld'
-    classpath(sourceSets.main.runtimeClasspath, sourceSets.main.compileClasspath)
+	main = 'hello.HelloWorld'
+	classpath(sourceSets.main.runtimeClasspath, sourceSets.main.compileClasspath)
 }
