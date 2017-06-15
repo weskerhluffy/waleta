@@ -465,7 +465,8 @@ public class TopPhrases {
 
 	public static List<String> findTopPhrases(String fileName,
 			Integer numberTops) {
-		BinaryHeapPriorityQueue<String> phrases_pq = new BinaryHeapPriorityQueue();
+		List<String> topPhrases = new ArrayList<>();
+		BinaryHeapPriorityQueue<String> phrasesPq = new BinaryHeapPriorityQueue();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
@@ -476,25 +477,29 @@ public class TopPhrases {
 				System.out.println(phrases + " mierda " + phrases.length);
 				for (String phrase : Arrays.asList(phrases)) {
 					System.out.println(phrase);
-					updatePhraseCardinality(phrases_pq, phrase);
+					updatePhraseCardinality(phrasesPq, phrase);
 				}
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return Arrays.asList(phrases_pq.removeFirst().toString());
+
+		for (Integer i = 0; i < numberTops; i++) {
+			topPhrases.add(phrasesPq.removeFirst());
+		}
+		return topPhrases;
 	}
 
 	public static void updatePhraseCardinality(
-			BinaryHeapPriorityQueue<String> phrases_pq, String phrase) {
+			BinaryHeapPriorityQueue<String> phrasesPq, String phrase) {
 		String phrase_stored;
-		if ((phrase_stored = phrases_pq.getObject(phrase)) != null) {
-			Integer currentCardinality = (int) phrases_pq.getPriority(phrase);
+		if ((phrase_stored = phrasesPq.getObject(phrase)) != null) {
+			Integer currentCardinality = (int) phrasesPq.getPriority(phrase);
 			currentCardinality++;
-			phrases_pq.relaxPriority(phrase, currentCardinality);
+			phrasesPq.relaxPriority(phrase, currentCardinality);
 		} else {
-			phrases_pq.add(phrase, 1);
+			phrasesPq.add(phrase, 1);
 		}
 	}
 }
