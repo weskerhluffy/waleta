@@ -25,8 +25,9 @@ targetCompatibility = 1.7
 dependencies {
 	compile group: 'org.codehaus.groovy', name: 'groovy-sql', version: '2.5.0-alpha-1'
 
-	compile 'org.codehaus.groovy:groovy:2.3.7'
+	compile 'org.codehaus.groovy:groovy:2.4'
 	compile "joda-time:joda-time:2.2"
+	compile "org.spockframework:spock-core:1.0-groovy-2.4"
 	testCompile "junit:junit:4.12"
 	// Spock Framework basic dependencies:
 	testCompile "org.codehaus.groovy:groovy-all:2.4.1"
