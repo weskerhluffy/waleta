@@ -415,7 +415,6 @@ class BinaryHeapPriorityQueue<E> extends AbstractSet<E> implements Iterator<E> {
 		indexToEntry.clear();
 		keyToEntry.clear();
 	}
-
 	// private void verify() {
 	// for (int i = 0; i < indexToEntry.size(); i++) {
 	// if (i != 0) {
@@ -472,12 +471,12 @@ public class TopPhrases {
 
 			String line;
 			while ((line = br.readLine()) != null) {
-				System.out.println(line);
+//				System.out.println(line);
 				String phrases[] = line.split("\\|", -1);
-				System.out.println(phrases + " mierda " + phrases.length);
+//				System.out.println(phrases + " mierda " + phrases.length);
 				for (String phrase : Arrays.asList(phrases)) {
-					System.out.println(phrase);
-					updatePhraseCardinality(phrasesPq, phrase);
+//					System.out.println(phrase);
+					updatePhraseCardinality(phrasesPq, phrase.trim());
 				}
 			}
 
@@ -488,6 +487,7 @@ public class TopPhrases {
 		for (Integer i = 0; i < numberTops; i++) {
 			topPhrases.add(phrasesPq.removeFirst());
 		}
+		
 		return topPhrases;
 	}
 

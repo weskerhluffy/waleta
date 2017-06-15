@@ -8,6 +8,7 @@ import groovy.sql.Sql
 import com.sjurgemeyer.spock.SingleExecution
 import spock.lang.Shared
 
+// XXX: https://objectpartners.com/2013/03/18/testing-tabular-output-in-spock/
 class SplitColumnTest extends Specification{
 
 	@Shared
