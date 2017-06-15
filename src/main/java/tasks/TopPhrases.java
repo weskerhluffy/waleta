@@ -1,11 +1,13 @@
 package tasks;
+
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
 // XXX: https://github.com/stanfordnlp/CoreNLP/blob/master/src/edu/stanford/nlp/util/BinaryHeapPriorityQueue.java
 
-class BinaryHeapPriorityQueue<E> extends AbstractSet<E> implements Iterator<E>  {
+class BinaryHeapPriorityQueue<E> extends AbstractSet<E> implements Iterator<E> {
 
 	/**
 	 * An {@code Entry} stores an object in the queue along with its current
@@ -431,42 +433,39 @@ class BinaryHeapPriorityQueue<E> extends AbstractSet<E> implements Iterator<E>  
 
 	public BinaryHeapPriorityQueue() {
 		keyToEntry = new HashMap<E, BinaryHeapPriorityQueue.Entry<E>>();
-		indexToEntry=new ArrayList<>();
+		indexToEntry = new ArrayList<>();
 	}
 
-//  @Override
-  public List<E> toSortedList() {
-    List<E> sortedList = new ArrayList<>(size());
-    BinaryHeapPriorityQueue<E> queue = this.deepCopy();
-    while (!queue.isEmpty()) {
-      sortedList.add(queue.removeFirst());
-    }
-    return sortedList;
-  }
+	// @Override
+	public List<E> toSortedList() {
+		List<E> sortedList = new ArrayList<>(size());
+		BinaryHeapPriorityQueue<E> queue = this.deepCopy();
+		while (!queue.isEmpty()) {
+			sortedList.add(queue.removeFirst());
+		}
+		return sortedList;
+	}
 
-  public BinaryHeapPriorityQueue<E> deepCopy() {
-    BinaryHeapPriorityQueue<E> queue =
-            new BinaryHeapPriorityQueue<>();
-    for (Entry<E> entry : keyToEntry.values()) {
-      queue.relaxPriority(entry.key, entry.priority);
-    }
-    return queue;
-  }
+	public BinaryHeapPriorityQueue<E> deepCopy() {
+		BinaryHeapPriorityQueue<E> queue = new BinaryHeapPriorityQueue<>();
+		for (Entry<E> entry : keyToEntry.values()) {
+			queue.relaxPriority(entry.key, entry.priority);
+		}
+		return queue;
+	}
 
-
-  @Override
-    public Iterator<E> iterator() {
-        return Collections.unmodifiableCollection(toSortedList()).iterator();
-	  }
+	@Override
+	public Iterator<E> iterator() {
+		return Collections.unmodifiableCollection(toSortedList()).iterator();
+	}
 
 }
 
 public class TopPhrases {
 
-	public static List<String> findTopPhrases(String fileName, Integer numberTops)
-	{
+	public static List<String> findTopPhrases(String fileName,
+			Integer numberTops) {
 		BinaryHeapPriorityQueue<String> phrases_pq = new BinaryHeapPriorityQueue();
-
 
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
@@ -474,36 +473,28 @@ public class TopPhrases {
 			while ((line = br.readLine()) != null) {
 				System.out.println(line);
 				String phrases[] = line.split("\\|", -1);
-				System.out.println(phrases+" mierda "+phrases.length);
-				for(String phrase:Arrays.asList(phrases))
-				{
+				System.out.println(phrases + " mierda " + phrases.length);
+				for (String phrase : Arrays.asList(phrases)) {
 					System.out.println(phrase);
-					
+					updatePhraseCardinality(phrases_pq, phrase);
 				}
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		phrases_pq.add("algo",10);
-		phrases_pq.add("algo1",20);
-		phrases_pq.add("algo3",30);
-		phrases_pq.add("algo4",20);
-		phrases_pq.relaxPriority("algo1",200);
 		return Arrays.asList(phrases_pq.removeFirst().toString());
 	}
-	public static void updatePhraseCardinality(BinaryHeapPriorityQueue<String> phrases_pq, String phrase)
-	{
+
+	public static void updatePhraseCardinality(
+			BinaryHeapPriorityQueue<String> phrases_pq, String phrase) {
 		String phrase_stored;
-		if((phrase_stored=phrases_pq.getObject(phrase))!=null)
-		{
-			Integer currentCardinality = (int)phrases_pq.getPriority(phrase);
+		if ((phrase_stored = phrases_pq.getObject(phrase)) != null) {
+			Integer currentCardinality = (int) phrases_pq.getPriority(phrase);
 			currentCardinality++;
 			phrases_pq.relaxPriority(phrase, currentCardinality);
-		}
-		else
-		{
-			phrases_pq.add(phrase,1);
+		} else {
+			phrases_pq.add(phrase, 1);
 		}
 	}
 }

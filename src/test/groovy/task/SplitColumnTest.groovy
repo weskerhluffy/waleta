@@ -24,7 +24,7 @@ class SplitColumnTest extends Specification{
 	}
 
 	@SingleExecution ("callSplitColumn")
-	def 'must split a column by a delimiter'() {
+	def "must split a column by a delimiter |"() {
 		given:
 		String row=""
 
@@ -74,12 +74,53 @@ class SplitColumnTest extends Specification{
 		35 | "11, "
 		36 | "11, "
 	}
+	
+	@SingleExecution ("callSplitColumn1")
+	def "must split a column by a delimiter ^"() {
+		given:
+		String row=""
+
+		when:
+		println("pero ka cra");
+		row=result[idx];
+		println("row es "+row)
+
+		then:
+		row==resultStr
+		where:
+		idx | resultStr
+		0 | "1, Smith"
+		1 | "2, Julio|Jones|Falcons"
+		2 | "3, White|Snow"
+		3 | "4, Paint|It|Red"
+		4 | "5, Green|Lantern"
+		5 | "6, Brown|bag"
+		6 | "7, |"
+		7 | "8, one"
+		8 | "8, two|three"
+		9 | "8, four|five|six"
+		10 | "8, seven"
+		11 | "9, aaa|bbb||ccc"
+		12 | "10, ||||hello"
+		13 | "11, ||||hello|||"
+
+	}
 
 	def callSplitColumn= {
 		List<String> rows=new ArrayList<String>();
 		rows.add(null)
 
 		sql.eachRow("call split_column ('|')") { tp ->
+			println([tp.result_str])
+			rows.add(tp.result_str)
+		}
+		return rows;
+	}
+	
+	def callSplitColumn1= {
+		List<String> rows=new ArrayList<String>();
+
+		sql.eachRow("call split_column ('^')") { tp ->
 			println([tp.result_str])
 			rows.add(tp.result_str)
 		}

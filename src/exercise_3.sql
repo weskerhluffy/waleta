@@ -68,6 +68,7 @@ BEGIN
   CLOSE sc_cursor;
 
   select * from result_strs;
+  drop temporary table result_strs;
 END //
 DELIMITER ;
 

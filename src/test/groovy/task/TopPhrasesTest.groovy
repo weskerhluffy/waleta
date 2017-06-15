@@ -11,7 +11,7 @@ class TopPhrasesTest extends Specification{
 		List<String> res=null;
 
 		when:
-		res=TopPhrases.findTopPhrases("/tmp/ass.txt",5)
+		res=TopPhrases.findTopPhrases("/tmp/test.txt",5)
 		println("oie zhiii "+res)
 
 		then:
