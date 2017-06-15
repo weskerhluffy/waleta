@@ -4,9 +4,9 @@ import random
 import csv
 import os
 
-word_size_max = 3
+word_size_max = 5
 phrase_size_max = 5
-file_size_max = 10000000
+file_size_max = 1000000000
 
 def generate_word(size):
     return ''.join(random.choice(string.ascii_lowercase) for x in range(size))

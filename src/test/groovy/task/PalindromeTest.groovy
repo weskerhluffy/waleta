@@ -1020,17 +1020,26 @@ class PalindromeTest extends Specification{
 	}
 	def 'ola1'() {
 		given:
-		Boolean isPalindrome;
+		Boolean failures = true;
+		String fileName = "palindromes_test.txt"
+		List<String> list;
 
 		when:
-		isPalindrome=Palindrome.isPalindrome("")
+
+		try  {
+			BufferedReader br = Files.newBufferedReader(Paths.get(fileName))
+			//br returns as stream and convert it into a List
+			list = br.lines().collect(Collectors.toList())
+			println("la linea es "+list)
+			failures = list.any{
+				inputStr->Palindrome.isPalindrome( inputStr.split("\\|", -1)[0]) != Boolean.valueOf(inputStr.split("\\|", -1)[1])}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		then:
 		true
 
-		where:
-		
-		phrase | isPalindromeResult
-		"Get a word in edgeways" | false
 	}
 }
