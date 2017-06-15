@@ -4,6 +4,11 @@ import spock.lang.Specification
 import java.sql.*;
 import groovy.sql.Sql
 import tasks.Palindrome
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.stream.Collectors
+import java.nio.charset.Charset
+import java.util.regex.Pattern
 
 
 class PalindromeTest extends Specification{
@@ -1020,26 +1025,64 @@ class PalindromeTest extends Specification{
 	}
 	def 'ola1'() {
 		given:
-		Boolean failures = true;
+		Boolean failures = false;
+//		String fileName = "/tmp/algo1.txt"
 		String fileName = "palindromes_test.txt"
 		List<String> list;
 
 		when:
+		if(Files.notExists(Paths.get(fileName)))
+		{
+			 throw new Exception();
+		}
+		else
+		{
+			println("si existe "+fileName)
+		}
 
+/*
 		try  {
-			BufferedReader br = Files.newBufferedReader(Paths.get(fileName))
+			BufferedReader br = Files.newBufferedReader(Paths.get(fileName), Charset.forName("Cp1252"))
 			//br returns as stream and convert it into a List
+			println("wut "+br.lines().toArray().length)
 			list = br.lines().collect(Collectors.toList())
 			println("la linea es "+list)
+
 			failures = list.any{
-				inputStr->Palindrome.isPalindrome( inputStr.split("\\|", -1)[0]) != Boolean.valueOf(inputStr.split("\\|", -1)[1])}
+				inputStr->Palindrome.isPalindrome(
+					inputStr.split("\\|", -1)[0]) !=
+					Boolean.valueOf(inputStr.split("\\|", -1)[1])}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
+		try  {
+			BufferedReader br = new BufferedReader(new FileReader(fileName))
+
+			String line;
+			while ((line = br.readLine()) != null) {
+				System.out.println("maldicion la linea "+line)
+				String []splitLine=line.split(Pattern.quote("|"))
+				String word=splitLine[0]
+				System.out.println("pues dale "+splitLine[0]+ " "+splitLine[1])
+				Boolean isPalindromeRef =Boolean.valueOf(splitLine[1].trim())
+				System.out.println(" i la morena "+word)
+				Boolean isPalindromeRes=Palindrome.isPalindrome(word)
+
+				if(isPalindromeRes!=isPalindromeRef)
+				{
+					failures=true
+					break
+				}
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		then:
-		true
+		failures!=true
 
 	}
 }
