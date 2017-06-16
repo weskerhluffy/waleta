@@ -4,9 +4,9 @@ import random
 import csv
 import os
 
-word_size_max = 5
-phrase_size_max = 5
-file_size_max = 1000000000
+word_size_max = 10
+phrase_size_max = 10
+file_size_max = 100000000
 
 def generate_word(size):
     return ''.join(random.choice(string.ascii_lowercase) for x in range(size))
@@ -26,7 +26,7 @@ def generate_phrases():
         spamwriter = csv.writer(csvfile, delimiter='|', quoting=csv.QUOTE_NONE, escapechar='\\')
         while(cur_size < file_size_max):
             phrases = []
-            for _ in range(5):
+            for _ in range(50):
                 phrases.append(generate_phrase())
 #            print("las frases %s"%phrases)
             spamwriter.writerow(phrases)

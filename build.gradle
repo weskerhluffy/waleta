@@ -19,8 +19,8 @@ repositories { // Spock releases are available from Maven Central
 	mavenCentral() }
 
 // Set Java version here, else default will be used:
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
 	compile group: 'org.codehaus.groovy', name: 'groovy-sql', version: '2.5.0-alpha-1'
