@@ -1,4 +1,4 @@
-package task
+package tasks
 
 import spock.lang.Specification
 import java.sql.*;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern
 
 
 class PalindromeTest extends Specification{
-	def 'ola'() {
+	def 'check palidrome strings'() {
 		given:
 		Boolean isPalindrome;
 
@@ -73,7 +73,7 @@ class PalindromeTest extends Specification{
 		"The female of the species is more deadly then the male" | false
 		"Milk of human kindness" | false
 		"Beam ends - On your" | false
-		"Ménage à trois" | false
+		"Mï¿½nage ï¿½ trois" | false
 		"Grasp the nettle" | false
 		"Step on no Pets" | true
 		"Safe sex" | false
@@ -965,7 +965,7 @@ class PalindromeTest extends Specification{
 		"Cost an arm and a leg" | false
 		"You'll wonder where the yellow went when you brush your teeth with Pepsodent" | false
 		"True blue" | false
-		"À la carte" | false
+		"ï¿½ la carte" | false
 		"Jack of all trades, master of none" | false
 		"Okay" | false
 		"Truth will out" | false
@@ -976,11 +976,11 @@ class PalindromeTest extends Specification{
 		"O Geronimo, no minor ego" | true
 		"For ever and a day" | false
 		"Know your onions" | false
-		"À la mode" | false
+		"ï¿½ la mode" | false
 		"Season of mists and mellow fruitfulness" | false
 		"Cold comfort" | false
 		"I have nothing to offer but blood toil tears and sweat" | false
-		"God’s dog." | true
+		"Godï¿½s dog." | true
 		"Baby father" | false
 		"Movers and shakers" | false
 		"Cat out of the bag - Let the" | false

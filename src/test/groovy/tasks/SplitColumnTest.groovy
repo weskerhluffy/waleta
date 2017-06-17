@@ -1,7 +1,6 @@
-package task
+package tasks
 
 import spock.lang.Specification
-import task.SplitColumnTest;
 
 import java.sql.*;
 import groovy.sql.Sql

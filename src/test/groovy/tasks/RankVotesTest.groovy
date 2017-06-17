@@ -1,4 +1,4 @@
-package task
+package tasks
 
 import spock.lang.Specification
 import java.sql.*;
@@ -12,7 +12,7 @@ class RankVotesTest extends Specification {
 		Integer resultIdx=0;
 		List<Integer> ranks=new ArrayList<Integer>();
 		List<Integer> votes=new ArrayList<Integer>();
-		def sql = Sql.newInstance('jdbc:mysql://localhost:3306/caca', 'caca',
+		def sql = Sql.newInstance('jdbc:mysql://red_queen:3306/caca', 'caca',
 				'caca', 'com.mysql.jdbc.Driver')
 
 		when:
