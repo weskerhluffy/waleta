@@ -8,6 +8,7 @@ class InitCapTest extends Specification{
 	def 'must return words capitalized in the first letter'() {
 		given:
 		String inputStr=a
+		
 		String initCapped=""
 		def sql = Sql.newInstance('jdbc:mysql://localhost:3306/caca', 'caca',
 				'caca', 'com.mysql.jdbc.Driver')
