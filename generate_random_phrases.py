@@ -6,7 +6,7 @@ import os
 
 word_size_max = 10
 phrase_size_max = 10
-file_size_max = 100000000
+file_size_max = 500000000
 
 def generate_word(size):
     return ''.join(random.choice(string.ascii_lowercase) for x in range(size))
