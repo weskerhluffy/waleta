@@ -1,10 +1,11 @@
+package tasks;
 import java.util.*;
 
 import static java.util.Arrays.asList;
 
 public class ComplementaryPairs {
 
-	public List<List<Integer>> twoSum(int[] nums, int target) {
+	public static List<List<Integer>> twoSum(int[] nums, int target) {
 		HashMap<Integer, Set<Integer>> positions_by_value = new HashMap<>();
 		Integer nums_len = nums.length;
 		List<List<Integer>> complementaryPairs = new ArrayList<>();

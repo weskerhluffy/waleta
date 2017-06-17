@@ -488,6 +488,7 @@ public class TopPhrases {
 			topPhrases.add(phrasesPq.removeFirst());
 		}
 		
+		System.out.println("el top de "+fileName+ " es "+topPhrases);
 		return topPhrases;
 	}
 
