@@ -12,7 +12,7 @@ import java.util.regex.Pattern
 
 
 class PalindromeTest extends Specification{
-	def 'check palidrome strings'() {
+	def 'check palidrome strings (inlined test data)'() {
 		given:
 		Boolean isPalindrome;
 
@@ -1023,7 +1023,7 @@ class PalindromeTest extends Specification{
 		"You can't teach an old dog new tricks" | false
 		"Dark side - The" | false
 	}
-	def 'ola1'() {
+	def 'check palidrome strings (file test data)'() {
 		given:
 		Boolean failures = false;
 //		String fileName = "/tmp/algo1.txt"
