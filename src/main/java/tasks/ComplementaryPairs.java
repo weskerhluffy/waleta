@@ -28,19 +28,40 @@ public class ComplementaryPairs {
 	 *         the second.
 	 */
 	public static List<List<Integer>> twoSum(int[] nums, int target) {
-		HashMap<Integer, Set<Integer>> positionsByValue = new HashMap<>();
+		/**
+		 * Space complexity is O(n^2) (taking into counting the result
+		 * <code>complementaryPairs</code> and n being the size of
+		 * <code>nums</code>), since in the worst case we will have 2
+		 * (complementary) numbers in the array, each happening half of the
+		 * total size of the array, and each occurrence of the numbers will be
+		 * paired with all occurrences in the other.
+		 * 
+		 * Let a,b be the only unique numbers in <code>nums</code>, N is the
+		 * size of the whole array and N/2 is the number of occurrences of a and
+		 * N/2 is the number of occurrences of b and a+b=t<code>target</code>.
+		 * Then (N^2)/4 is the size of the resulting array (comprised of pairs
+		 * [a,b]), bounded by (N^2) so the space complexity in this worst
+		 * scenario is O(N^2).
+		 * 
+		 */
 		Integer numsLen = nums.length;
-		List<List<Integer>> complementaryPairs = new ArrayList<>();
 		Set<Integer> positions = null;
-		Set<Integer> alreadyProcessed = new HashSet<Integer>();
 		Set<Integer> numbersUniq = null;
+		/**
+		 * If we don't take into account the resulting list, the space
+		 * complexity is O(n) because we use at most n slots of memory for
+		 * storing the occurrences of each unique number or the number itself.
+		 */
+		Set<Integer> alreadyProcessed = new HashSet<Integer>();
+		HashMap<Integer, Set<Integer>> positionsByValue = new HashMap<>();
+		List<List<Integer>> complementaryPairs = new ArrayList<>();
 
 		for (Integer i = 0; i < numsLen; i++) {
 			Integer numCur = nums[i];
 			/**
 			 * Store all positions of the number numCur in a hash table, if the
 			 * insertion in the table is O(1), then this whole loop is O(n),
-			 * where n is the cardinality of nums array.
+			 * where n is the size of nums array.
 			 */
 			if ((positions = (Set<Integer>) positionsByValue.get(numCur)) != null) {
 				positions.add(i);
@@ -53,9 +74,10 @@ public class ComplementaryPairs {
 		/**
 		 * Here we sort the numbers (one occurrence of each) so as to return the
 		 * pairs ordered, as the HashMap.keySet method is not guaranteed to sort
-		 * the keys. This is the most expensive operation in the function, as
-		 * the insertion of a number in a tree is O(log(n)), so to store all
-		 * unique numbers at most this operation will take O(n*log(n)).
+		 * the keys. This is the most expensive operation (in time) in the
+		 * function, as the insertion of a number in a tree is O(log(n)), so to
+		 * store all unique numbers at most this operation will take
+		 * O(n*log(n)).
 		 */
 		numbersUniq = new TreeSet<>(positionsByValue.keySet());
 
@@ -98,8 +120,9 @@ public class ComplementaryPairs {
 				}
 				/**
 				 * If the complement of the current number is itself, then the
-				 * cardinality of the pairs of that number is the same as the
-				 * combination of all the positions of such numbers.
+				 * number of occurrences of pairs of that number is the same as
+				 * the number of combinations of all the positions of such
+				 * number.
 				 */
 				else {
 					for (int i = 0; i < ocurrencesComplement - 1; i++) {
@@ -111,9 +134,9 @@ public class ComplementaryPairs {
 				}
 			}
 			/**
-			 * To avoid reporting the pairs twice (one time for each pair of
-			 * complementary numbers) we store the numbers we already processed
-			 * and the complement.
+			 * To avoid reporting the pairs twice (one time for each element in
+			 * the pair of complementary numbers) we store the numbers we
+			 * already processed and the complement.
 			 */
 			alreadyProcessed.add(numCur);
 			alreadyProcessed.add(complement);
