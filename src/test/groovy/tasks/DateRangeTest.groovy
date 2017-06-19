@@ -7,7 +7,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class DateRangeTest extends Specification{
-	def 'search for open bugs'() {
+	def 'search for open bugs for each date in a range'() {
 		given:
 		List<List<String>,List<Integer>> bugCount=new ArrayList<>();
 		PreparedStatement pstmt;
@@ -55,6 +55,27 @@ where a.Date between ? and ? """)
 
 		where:
 		beginDateStr|endDateStr|bugCountRef
+		/** Just one range is used because the test values where adjusted to check several cases, basically:
+		 * <ul> 
+		 * <li> When the bug has open_date before the range. 
+		 * 		<ul>
+		 * 			<li> When the bug has close_date before the range.
+		 * 			<li> When the bug has close_date during the range.
+		 * 			<li> When the bug has close_date after the range.
+		 * 		</ul>
+		 * <li> When the bug has open_date during the range.
+		 * 		<ul>
+		 * 			<li> When the bug has close_date during the range.
+		 * 			<li> When the bug has close_date after the range.
+		 * 		</ul>
+		 * <li> When the bug has open_date after range.
+		 * 		<ul>
+		 * 			<li> When the bug has close_date after the range.
+		 * 		</ul>
+		 * </ul>
+		 */
+		
+		
 		"2011-11-12"|  "2012-04-26"|[
 			["2011-11-12", 5],
 			["2011-11-13", 4],

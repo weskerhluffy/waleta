@@ -12,7 +12,7 @@ import java.util.regex.Pattern
 
 
 class ComplementaryPairsTest extends Specification{
-	def 's'() {
+	def 'k-complementary pairs'() {
 		given:
 		List<List<Integer>> complementaryPairs;
 
@@ -27,14 +27,20 @@ class ComplementaryPairsTest extends Specification{
 
 		where:
 
+		// All tests expect the pairs to be ordered in their 1st element and
+		// in contentions in the 2nd element.
 		numbers|target|complementaryPairsRef
-		[]| 10|[]
-		[9]| 10|[]
+		// These are null/very small input tests.
+		[]| 10|[][9]| 10|[]
 		[10]| 10|[]
+		// Testing the case where the complementary pair elements are the same.
 		[5, 5]| 10|[[5, 5]]
 		[5, 5, 3]| 10|[[5, 5]]
 		[3, 5, 5, 7]| 10|[[3, 7], [5, 5]]
 		[5, 3, 5, 7]| 10|[[3, 7], [5, 5]]
+		// More general tests. Check that the number of complementary pairs is
+		// effectively n*m where n is the number of occurrences of one element
+		// of the pair and m the number of occurrences of the other.
 		[5, 4, 3, 2, 1, 2, 6, 3, 4, 5]| 10|[[4, 6], [4, 6], [5, 5]]
 		[1, 2, 3, 4, 5, 6, 7, 8, 9]| 10|[
 			[1, 9],
@@ -146,5 +152,6 @@ class ComplementaryPairsTest extends Specification{
 			921,
 			682
 		]| 957|[]
+		//TODO: Test very big cases, like the orders of millions.
 	}
 }
