@@ -10,8 +10,8 @@ class InitCapTest extends Specification{
 		String inputStr=a
 
 		String initCapped=""
-		def sql = Sql.newInstance('jdbc:mysql://red_queen:3306/caca', 'caca',
-				'caca', 'com.mysql.jdbc.Driver')
+		def sql = Sql.newInstance('jdbc:mysql://localhost:3306/test', 'test',
+				'test', 'com.mysql.jdbc.Driver')
 
 		when:
 		def res=sql.firstRow("select initcap('"+inputStr+"') as cap");

@@ -30,6 +30,12 @@ class TopPhrasesTest extends Specification{
 		// count_phrases.sh script, using linux utilities. It would be very
 		// difficult to do manually counting of such big input.
 		//
+		// The top_phrases_test_small_2.txt file was split because git source
+		// control was used and could not be uploded as a single file, it is
+		// too big. The script join_file_pieces.sh can be used to put the
+		// top_phrases_test_small_2.txta* files together into
+		// top_phrases_test_small_2.txt.
+		//
 		// Finally, even when the current implementation of findTopPhrases is
 		// limited (because the queue resides in memory), these tests show the
 		// feasibility of using the algorithm implemented there, and the

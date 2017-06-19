@@ -14,8 +14,8 @@ class SplitColumnTest extends Specification{
 	Sql sql=null;
 
 	def setupSpec() {
-		sql = Sql.newInstance('jdbc:mysql://red_queen:3306/caca', 'caca',
-				'caca', 'com.mysql.jdbc.Driver')
+		sql = Sql.newInstance('jdbc:mysql://localhost:3306/test', 'test',
+				'test', 'com.mysql.jdbc.Driver')
 	}
 
 	/**

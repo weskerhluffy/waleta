@@ -16,8 +16,8 @@ class DateRangeTest extends Specification{
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		def sql = Sql.newInstance('jdbc:mysql://red_queen:3306/caca', 'caca',
-				'caca', 'com.mysql.jdbc.Driver')
+		def sql = Sql.newInstance('jdbc:mysql://localhost:3306/test', 'test',
+				'test', 'com.mysql.jdbc.Driver')
 		con=sql.getConnection();
 
 		pstmt=con.prepareStatement(""" 
