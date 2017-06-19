@@ -4,6 +4,7 @@
 -- Parameters:
 -- input_str IN The string whose words are to be capitalized on its first
 --              letter.
+-- Returns: Capitalized string.
 drop function if exists initcap;
 delimiter $$
 create function initcap(input_str text)
@@ -28,6 +29,9 @@ begin
   -- space check if the following character is alphabetic, if so, capitalize
   -- it and jump to the next space, else, only look for the next white space.
   -- Repeat this until there are no more spaces.
+  -- The time complexity of this is O(n) where n is the size of the string,
+  -- because every time we look forward for the next space, we move the pointer
+  -- to that place so every character in the string is visited only once.
   set spaces_present=0;
   repeat
     -- Also make sure we don't exceed the length of the string.
@@ -44,6 +48,8 @@ begin
   until spaces_present = 0
   end repeat;
   
+  -- The space complexity is O(n) because we create another string which will
+  -- be at most as big as the original one.
   return input_str_int;
 end;
 $$
