@@ -18,13 +18,14 @@ class PalindromeTest extends Specification{
 
 		when:
 		isPalindrome=Palindrome.isPalindrome(phrase)
-		
+
 		then:
 		isPalindrome == isPalindromeResult
 
 		where:
-		
+
 		phrase | isPalindromeResult
+		// Very small/null cases.
 		"" | true
 		"3" | true
 		"a" | true
@@ -32,6 +33,7 @@ class PalindromeTest extends Specification{
 		"rr" | true
 		"22" | true
 		"23" | false
+		// General test cases, some with non-printable characters.
 		"Get a word in edgeways" | false
 		"The best laid schemes of mice and men" | false
 		"Strike while the iron is hot" | false
@@ -1026,50 +1028,33 @@ class PalindromeTest extends Specification{
 	def 'check palidrome strings (file test data)'() {
 		given:
 		Boolean failures = false;
-//		String fileName = "/tmp/algo1.txt"
+		// This test file contains a couple of thousands of test cases.
+		// Every line from the file has a string and a "true"/"false"
+		// string which indicates whether we know the string is a
+		// palindrome or not.
 		String fileName = "palindromes_test.txt"
 		List<String> list;
 
 		when:
-		if(Files.notExists(Paths.get(fileName)))
-		{
-			 throw new Exception();
-		}
-		else
-		{
-			println("si existe "+fileName)
+		if(Files.notExists(Paths.get(fileName))) {
+			throw new Exception();
 		}
 
-/*
-		try  {
-			BufferedReader br = Files.newBufferedReader(Paths.get(fileName), Charset.forName("Cp1252"))
-			//br returns as stream and convert it into a List
-			println("wut "+br.lines().toArray().length)
-			list = br.lines().collect(Collectors.toList())
-			println("la linea es "+list)
-
-			failures = list.any{
-				inputStr->Palindrome.isPalindrome(
-					inputStr.split("\\|", -1)[0]) !=
-					Boolean.valueOf(inputStr.split("\\|", -1)[1])}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		*/
 		try  {
 			BufferedReader br = new BufferedReader(new FileReader(fileName))
 
 			String line;
 			while ((line = br.readLine()) != null) {
-				System.out.println("maldicion la linea "+line)
 				String []splitLine=line.split(Pattern.quote("|"))
+				// Read the string.
 				String word=splitLine[0]
-				System.out.println("pues dale "+splitLine[0]+ " "+splitLine[1])
+				// Read if it is a palindrome.
 				Boolean isPalindromeRef =Boolean.valueOf(splitLine[1].trim())
-				System.out.println(" i la morena "+word)
+				// Call the palindrome checker function for the string.
 				Boolean isPalindromeRes=Palindrome.isPalindrome(word)
 
+				// Check if the result of the function is the expected,
+				// according to the file.
 				if(isPalindromeRes!=isPalindromeRef)
 				{
 					failures=true
@@ -1080,7 +1065,7 @@ class PalindromeTest extends Specification{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		then:
 		failures!=true
 
