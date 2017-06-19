@@ -31,7 +31,8 @@ class ComplementaryPairsTest extends Specification{
 		// in contentions in the 2nd element.
 		numbers|target|complementaryPairsRef
 		// These are null/very small input tests.
-		[]| 10|[][9]| 10|[]
+		[]| 10|[]
+		[9]| 10|[]
 		[10]| 10|[]
 		// Testing the case where the complementary pair elements are the same.
 		[5, 5]| 10|[[5, 5]]
