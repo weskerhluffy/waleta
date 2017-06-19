@@ -18,10 +18,6 @@ class RankVotesTest extends Specification {
 		when:
 		sql.execute("set @rowno=0")
 		sql.eachRow('select v.*,@rowno:=@rowno+1 as rank from votes v order by v.votes desc') { tp ->
-			println([
-				tp.rank,
-				tp.votes
-			])
 			ranks.add(tp.rank)
 			votes.add(tp.votes)
 			resultIdx++
@@ -30,7 +26,14 @@ class RankVotesTest extends Specification {
 		then:
 		checkOrder(ranks, votes)
 	}
-
+	/**
+	 * Check that the ranks are in increasing order and that the votes are in
+	 * decreasing order (i.e. that we are listing the rows with more votes
+	 * first).
+	 * @param ranks
+	 * @param votes
+	 * @return If the ordering of the result is correct.
+	 */
 	public Boolean checkOrder(List<Integer> ranks, List<Integer> votes){
 		if(ranks.size()!=votes.size()){
 			return false;
@@ -51,5 +54,3 @@ class RankVotesTest extends Specification {
 		return true;
 	}
 }
-
-//set @rowno = 0;select v.*,@rowno:=@rowno+1 as rank from votes v order by v.votes;

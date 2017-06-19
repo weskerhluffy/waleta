@@ -7,7 +7,7 @@ import groovy.sql.Sql
 import com.sjurgemeyer.spock.SingleExecution
 import spock.lang.Shared
 
-// XXX: https://objectpartners.com/2013/03/18/testing-tabular-output-in-spock/
+
 class SplitColumnTest extends Specification{
 
 	@Shared
@@ -16,22 +16,23 @@ class SplitColumnTest extends Specification{
 	def setupSpec() {
 		sql = Sql.newInstance('jdbc:mysql://red_queen:3306/caca', 'caca',
 				'caca', 'com.mysql.jdbc.Driver')
-		println('Setting up test data...')
 	}
 
-	def cleanup() {
-		println('Cleaning up after a test!')
-	}
-
+	/**
+	 * Check that the columns are split in the "|" character. The
+	 * <code>SingleExecution</code> annotation is to execute
+	 * <code>callSplitColumn</code> once and compare the multiple rows of the
+	 * result against the corresponding entry in the <code>where</code> table
+	 * according to the order in which the results where delivered.
+	 * @return
+	 */
 	@SingleExecution ("callSplitColumn")
 	def "must split a column by a delimiter |"() {
 		given:
 		String row=""
 
 		when:
-		println("pero ka cra");
 		row=result[idx];
-		println("row es "+row)
 
 		then:
 		row==resultStr
@@ -74,16 +75,18 @@ class SplitColumnTest extends Specification{
 		35 | "11, "
 		36 | "11, "
 	}
-	
+
+	/**
+	 * Check that the columns are split in the "^" character.
+	 * @return
+	 */
 	@SingleExecution ("callSplitColumn1")
 	def "must split a column by a delimiter ^"() {
 		given:
 		String row=""
 
 		when:
-		println("pero ka cra");
 		row=result[idx];
-		println("row es "+row)
 
 		then:
 		row==resultStr
@@ -103,7 +106,6 @@ class SplitColumnTest extends Specification{
 		11 | "9, aaa|bbb||ccc"
 		12 | "10, ||||hello"
 		13 | "11, ||||hello|||"
-
 	}
 
 	def callSplitColumn= {
@@ -111,17 +113,15 @@ class SplitColumnTest extends Specification{
 		rows.add(null)
 
 		sql.eachRow("call split_column ('|')") { tp ->
-			println([tp.result_str])
 			rows.add(tp.result_str)
 		}
 		return rows;
 	}
-	
+
 	def callSplitColumn1= {
 		List<String> rows=new ArrayList<String>();
 
 		sql.eachRow("call split_column ('^')") { tp ->
-			println([tp.result_str])
 			rows.add(tp.result_str)
 		}
 		return rows;
