@@ -4,9 +4,39 @@ import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
 
-// XXX: https://github.com/stanfordnlp/CoreNLP/blob/master/src/edu/stanford/nlp/util/BinaryHeapPriorityQueue.java
-
+/**
+ * This is an implementation of a priority queue in the way of an updatable
+ * binary max-heap. Insertion,update and deletion have time complexity O(log(n))
+ * where n is the number of elements that are added to the heap. This is because
+ * a heap is a balanced binary tree, so to obtain/update the max element only
+ * log(n) elements of the tree have to be modified (one for each level of such
+ * tree).
+ * 
+ * Space complexity is O(n) given that the tree is represented in an array form
+ * (where there are as much nodes as elements are added), where the
+ * parent/children are obtained doing index arithmetic.
+ * 
+ * In this implementation the array representing the tree (
+ * <code>indexToEntry</code>) is in memory, but the idea would be to store that
+ * array in disk (maybe using {@code MappedByteBuffer} to map some file system
+ * space into the memory of the process which instantiated this class) so as to
+ * avoid having the whole list of strings (or the hash keys of those strings) in
+ * memory. This couldn't be done because of time constraints, but it wouldn't be
+ * very difficult.
+ * 
+ * @author
+ * 
+ * @param <E>
+ *            In this case <code>E</code> is {@link String}, and the in this
+ *            case all the string is stored, but we could only store a hash key
+ *            of the string. We could for example apply md5sum to every string
+ *            and store that number instead of the whole string, so the space
+ *            could be greatly reduced. Of course that would be under the
+ *            assumption that md5sum (or any other hashing function) returns a
+ *            unique key for every different string.
+ */
 class BinaryHeapPriorityQueue<E> extends AbstractSet<E> implements Iterator<E> {
 
 	/**
@@ -415,27 +445,12 @@ class BinaryHeapPriorityQueue<E> extends AbstractSet<E> implements Iterator<E> {
 		indexToEntry.clear();
 		keyToEntry.clear();
 	}
-	// private void verify() {
-	// for (int i = 0; i < indexToEntry.size(); i++) {
-	// if (i != 0) {
-	// // check ordering
-	// if (compare(getEntry(i), parent(getEntry(i))) < 0) {
-	// log.info("Error in the ordering of the heap! ("+i+")");
-	// System.exit(0);
-	// }
-	// }
-	// // check placement
-	// if (i != ((Entry)indexToEntry.get(i)).index)
-	// log.info("Error in placement in the heap!");
-	// }
-	// }
 
 	public BinaryHeapPriorityQueue() {
 		keyToEntry = new HashMap<E, BinaryHeapPriorityQueue.Entry<E>>();
 		indexToEntry = new ArrayList<>();
 	}
 
-	// @Override
 	public List<E> toSortedList() {
 		List<E> sortedList = new ArrayList<>(size());
 		BinaryHeapPriorityQueue<E> queue = this.deepCopy();
@@ -462,20 +477,34 @@ class BinaryHeapPriorityQueue<E> extends AbstractSet<E> implements Iterator<E> {
 
 public class TopPhrases {
 
+	/**
+	 * Return the {@code numberTops} phrases that have more occurrences in
+	 * {@code fileName}.
+	 * 
+	 * @param fileName
+	 *            The file where the phrases are stored.
+	 * @param numberTops
+	 *            The number of top ranking phrases to be returned.
+	 * @return Top {@code numberTops} phrases.
+	 */
 	public static List<String> findTopPhrases(String fileName,
 			Integer numberTops) {
 		List<String> topPhrases = new ArrayList<>();
-		BinaryHeapPriorityQueue<String> phrasesPq = new BinaryHeapPriorityQueue();
+		BinaryHeapPriorityQueue<String> phrasesPq = new BinaryHeapPriorityQueue<>();
 
+		/**
+		 * Read line by line, as the idea is to avoid having the whole thing in
+		 * memory.
+		 */
 		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-
 			String line;
+			/**
+			 * The idea is that every time we encounter a phrase, we increment
+			 * it's priority by one in the priority queue.
+			 */
 			while ((line = br.readLine()) != null) {
-//				System.out.println(line);
 				String phrases[] = line.split("\\|", -1);
-//				System.out.println(phrases + " mierda " + phrases.length);
 				for (String phrase : Arrays.asList(phrases)) {
-//					System.out.println(phrase);
 					updatePhraseCardinality(phrasesPq, phrase.trim());
 				}
 			}
@@ -484,18 +513,31 @@ public class TopPhrases {
 			e.printStackTrace();
 		}
 
+		/**
+		 * This is sort of a partial heap sort, we take the top phrase from the
+		 * queue, then the queue promotes the next phrase (in order of
+		 * Occurrences) to the top, so the next time we reap the top of the
+		 * queue, we obtain the next element in decreasing order.
+		 */
 		for (Integer i = 0; i < numberTops; i++) {
 			topPhrases.add(phrasesPq.removeFirst());
 		}
-		
-		System.out.println("el top de "+fileName+ " es "+topPhrases);
+
 		return topPhrases;
 	}
 
+	/**
+	 * 
+	 * @param phrasesPq
+	 *            Priority queue of phrases
+	 * @param phrase
+	 *            Phrase which occurrences/priority will be incremented by 1 in
+	 *            {@code phrasesPq}.
+	 */
 	public static void updatePhraseCardinality(
 			BinaryHeapPriorityQueue<String> phrasesPq, String phrase) {
-		String phrase_stored;
-		if ((phrase_stored = phrasesPq.getObject(phrase)) != null) {
+		String phraseStored;
+		if ((phraseStored = phrasesPq.getObject(phrase)) != null) {
 			Integer currentCardinality = (int) phrasesPq.getPriority(phrase);
 			currentCardinality++;
 			phrasesPq.relaxPriority(phrase, currentCardinality);
