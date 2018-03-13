@@ -54,3 +54,6 @@ task( hellow, dependsOn: jar, type: JavaExec ) {
 	main = 'hello.HelloWorld'
 	classpath(sourceSets.main.runtimeClasspath, sourceSets.main.compileClasspath)
 }
+
+
+project.ext.dbHost= "red_queen"
